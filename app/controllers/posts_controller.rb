@@ -44,16 +44,16 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.friendly.find(params[:slug])
   end
 
   def authorize_user
-    unless @post.user == current_user
+    unless current_user == @post.user
       redirect_to posts_url, alert: 'You are not authorized to perform this action.'
     end
   end
 
   def post_params
-    params.require(:post).permit(:title, :description, :body)
+    params.require(:post).permit(:title, :description, :body, :author)
   end
 end 

@@ -46,6 +46,19 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# Use Devise for authentication
+gem "devise"
+
+# Use Bootstrap for styling
+gem "bootstrap", "~> 5.3.3"
+gem "sassc-rails"
+
+# Use Kaminari for pagination
+gem "kaminari"
+
+# Use FriendlyId for slugs
+gem "friendly_id", "~> 5.1.0"
+
 group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"

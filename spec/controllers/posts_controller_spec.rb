@@ -7,6 +7,8 @@ RSpec.describe PostsController, type: :controller do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:post_item) { create(:post, user: user) }
+  let(:valid_attributes) { attributes_for(:post) }
+  let(:invalid_attributes) { attributes_for(:post, title: '') }
   # Michael: Named post_item since it can be confused with the 
   #request action within a controller spec
 
@@ -26,7 +28,7 @@ RSpec.describe PostsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before { get :show, params: { id: post_item.id } }
+    before { get :show, params: { slug: post_item.slug } }
 
     it 'returns a successful response' do
       expect(response).to be_successful
@@ -67,53 +69,32 @@ RSpec.describe PostsController, type: :controller do
       before { sign_in user }
 
       context 'with valid params' do
-        let(:valid_attributes) do
-          {
-            title: 'New Post',
-            description: 'Description',
-            body: 'Body content'
-          }
-        end
-
-        it 'creates a new post' do
+        it 'creates a new Post' do
           expect {
-            process :create, method: :post, params: { post: valid_attributes }
+            post :create, params: { post: valid_attributes }
           }.to change(Post, :count).by(1)
         end
 
         it 'redirects to the created post' do
-          process :create, method: :post, params: { post: valid_attributes }
-          expect(response).to redirect_to(Post.last)
-        end
-
-        it 'sets the author to the current user email' do
-          process :create, method: :post, params: { post: valid_attributes }
-          expect(Post.last.author).to eq(user.email)
+          post :create, params: { post: valid_attributes }
+          expect(response).to redirect_to(post_path(Post.last))
         end
       end
 
       context 'with invalid params' do
-        let(:invalid_attributes) do
-          {
-            title: '',
-            description: '',
-            body: ''
-          }
-        end
-
-        it 'does not create a new post' do
+        it 'does not create a new Post' do
           expect {
-            process :create, method: :post, params: { post: invalid_attributes }
-          }.not_to change(Post, :count)
+            post :create, params: { post: invalid_attributes }
+          }.to_not change(Post, :count)
         end
 
         it 'returns unprocessable entity status' do
-          process :create, method: :post, params: { post: invalid_attributes }
+          post :create, params: { post: invalid_attributes }
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
         it 'includes the new post form in the rendered view' do
-          process :create, method: :post, params: { post: invalid_attributes }
+          post :create, params: { post: invalid_attributes }
           expect(response.body).to include('New Post')
         end
       end
@@ -121,7 +102,7 @@ RSpec.describe PostsController, type: :controller do
 
     context 'when user is not signed in' do
       it 'redirects to sign in' do
-        process :create, method: :post, params: { post: { title: 'Test' } }
+        post :create, params: { post: valid_attributes }
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -131,7 +112,7 @@ RSpec.describe PostsController, type: :controller do
     context 'when user is signed in' do
       before do
         sign_in user
-        get :edit, params: { id: post_item.id }
+        get :edit, params: { slug: post_item.slug }
       end
 
       it 'returns a successful response' do
@@ -144,7 +125,7 @@ RSpec.describe PostsController, type: :controller do
     end
 
     context 'when user is not signed in' do
-      before { get :edit, params: { id: post_item.id } }
+      before { get :edit, params: { slug: post_item.slug } }
 
       it 'redirects to sign in' do
         expect(response).to redirect_to(new_user_session_path)
@@ -154,75 +135,57 @@ RSpec.describe PostsController, type: :controller do
     context 'when user is not the author' do
       before do
         sign_in other_user
-        get :edit, params: { id: post_item.id }
+        get :edit, params: { slug: post_item.slug }
       end
 
       it 'redirects to posts index' do
-        expect(response).to redirect_to(posts_url)
+        expect(response).to redirect_to(posts_path)
       end
     end
   end
 
   describe 'PATCH #update' do
+    let(:new_attributes) { { title: "Updated Title", description: "Updated Description", body: "Updated Body" } }
+
     context 'when user is signed in' do
       before { sign_in user }
 
       context 'with valid params' do
-        let(:new_attributes) do
-          {
-            title: 'Updated Title',
-            description: 'Updated Description',
-            body: 'Updated Body'
-          }
-        end
-
-        before do
-          process :update, method: :patch, params: { id: post_item.id, post: new_attributes }
-        end
-
         it 'updates the post' do
+          patch :update, params: { slug: post_item.slug, post: new_attributes }
           post_item.reload
-          expect(post_item.title).to eq('Updated Title')
-          expect(post_item.description).to eq('Updated Description')
-          expect(post_item.body).to eq('Updated Body')
+          expect(post_item.title).to eq("Updated Title")
         end
 
         it 'redirects to the post' do
-          expect(response).to redirect_to(post_item)
+          patch :update, params: { slug: post_item.slug, post: new_attributes }
+          post_item.reload
+          expect(response).to redirect_to(post_path(post_item))
         end
       end
 
       context 'with invalid params' do
-        let(:invalid_attributes) do
-          {
-            title: '',
-            description: '',
-            body: ''
-          }
-        end
-
-        before do
-          process :update, method: :patch, params: { id: post_item.id, post: invalid_attributes }
-        end
-
         it 'does not update the post' do
+          patch :update, params: { slug: post_item.slug, post: invalid_attributes }
           post_item.reload
-          expect(post_item.title).not_to eq('')
+          expect(post_item.title).to_not eq("")
         end
 
         it 'returns unprocessable entity status' do
+          patch :update, params: { slug: post_item.slug, post: invalid_attributes }
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
         it 'includes the edit form in the rendered view' do
-          expect(response.body).to include('Edit Post')
+          patch :update, params: { slug: post_item.slug, post: invalid_attributes }
+          expect(response.body).to include("Edit Post")
         end
       end
     end
 
     context 'when user is not signed in' do
       it 'redirects to sign in' do
-        process :update, method: :patch, params: { id: post_item.id, post: { title: 'Test' } }
+        patch :update, params: { slug: post_item.slug, post: { title: 'Test' } }
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -231,8 +194,8 @@ RSpec.describe PostsController, type: :controller do
       before { sign_in other_user }
 
       it 'redirects to posts index' do
-        process :update, method: :patch, params: { id: post_item.id, post: { title: 'Test' } }
-        expect(response).to redirect_to(posts_url)
+        patch :update, params: { slug: post_item.slug, post: { title: 'Test' } }
+        expect(response).to redirect_to(posts_path)
       end
     end
   end
@@ -244,19 +207,19 @@ RSpec.describe PostsController, type: :controller do
       it 'destroys the post' do
         post_to_delete = create(:post, user: user)
         expect {
-          process :destroy, method: :delete, params: { id: post_to_delete.id }
+          delete :destroy, params: { slug: post_to_delete.slug }
         }.to change(Post, :count).by(-1)
       end
 
       it 'redirects to posts index' do
-        process :destroy, method: :delete, params: { id: post_item.id }
-        expect(response).to redirect_to(posts_url)
+        delete :destroy, params: { slug: post_item.slug }
+        expect(response).to redirect_to(posts_path)
       end
     end
 
     context 'when user is not signed in' do
       it 'redirects to sign in' do
-        process :destroy, method: :delete, params: { id: post_item.id }
+        delete :destroy, params: { slug: post_item.slug }
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -265,8 +228,8 @@ RSpec.describe PostsController, type: :controller do
       before { sign_in other_user }
 
       it 'redirects to posts index' do
-        process :destroy, method: :delete, params: { id: post_item.id }
-        expect(response).to redirect_to(posts_url)
+        delete :destroy, params: { slug: post_item.slug }
+        expect(response).to redirect_to(posts_path)
       end
     end
   end

@@ -17,7 +17,7 @@
             </div>
             <% if user_signed_in? && @post.user == current_user %>
               <div class="btn-group">
-                <%= link_to 'Edit', edit_post_path(@post), class: 'btn btn-outline-secondary' %>
+                <%= link_to 'Edit', edit_post_path(@post.slugged), class: 'btn btn-outline-secondary' %>
                 <%= button_to 'Delete', @post, method: :delete, 
                     data: { confirm: 'Are you sure?' }, 
                     class: 'btn btn-outline-danger' %>

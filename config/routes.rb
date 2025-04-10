@@ -10,6 +10,6 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  resources :posts
-  root "posts#index"
+  resources :posts, param: :slug, constraints: { slug: /[a-z][a-z0-9-]*[a-z0-9]/ }
+  root 'posts#index'
 end
