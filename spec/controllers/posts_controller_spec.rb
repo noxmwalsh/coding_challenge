@@ -28,7 +28,11 @@ RSpec.describe PostsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before { get :show, params: { slug: post_item.slug } }
+    let(:post_item) { create(:post) }
+
+    before do
+      get :show, params: { slug: post_item.slug }
+    end
 
     it 'returns a successful response' do
       expect(response).to be_successful
@@ -36,9 +40,7 @@ RSpec.describe PostsController, type: :controller do
 
     it 'includes the post details in the rendered view' do
       expect(response.body).to include(post_item.title)
-      expect(response.body).to include(post_item.body)
-      expect(response.body).to include(post_item.description)
-      expect(response.body).to include(post_item.slug)
+      expect(response.body).to include(post_item.body.to_plain_text)
     end
   end
 

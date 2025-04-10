@@ -3,10 +3,12 @@ class Post < ApplicationRecord
   friendly_id :title, use: :slugged
   
   belongs_to :user
+  has_rich_text :body
   
-  validates :title, presence: true
-  validates :description, presence: true
+  validates :title, presence: true, length: { minimum: 3, maximum: 100 }
+  validates :description, presence: true, length: { minimum: 10, maximum: 200 }
   validates :body, presence: true
+  validates :hero_image_url, length: { maximum: 1000 }, allow_blank: true
   validates :author, presence: true
   
   def should_generate_new_friendly_id?
