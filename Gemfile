@@ -18,6 +18,8 @@ gem "stimulus-rails"
 gem "jbuilder"
 # Authentication solution
 gem "devise"
+# Fake data generation
+gem "faker"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -45,6 +47,8 @@ gem "thruster", require: false
 group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
+  gem "kaminari"
+  gem "rails-controller-testing"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ], require: "debug/prelude"
 
