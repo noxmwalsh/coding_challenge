@@ -2,22 +2,26 @@ require 'rails_helper'
 
 RSpec.describe PostsController, type: :controller do
   include Devise::Test::ControllerHelpers
+  render_views
 
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:post_item) { create(:post, user: user) }
-  # Michael: Nmaed post_item since it can be confused with the 
+  # Michael: Named post_item since it can be confused with the 
   #request action within a controller spec
 
   describe 'GET #index' do
-    before { get :index }
+    before do
+      post_item # Create the post before the request
+      get :index
+    end
 
     it 'returns a successful response' do
       expect(response).to be_successful
     end
 
-    it 'assigns @posts' do
-      expect(assigns(:posts)).to eq([post_item])
+    it 'includes the post in the rendered view' do
+      expect(response.body).to include(post_item.title)
     end
   end
 
@@ -28,8 +32,8 @@ RSpec.describe PostsController, type: :controller do
       expect(response).to be_successful
     end
 
-    it 'assigns @post' do
-      expect(assigns(:post)).to eq(post_item)
+    it 'includes the post details in the rendered view' do
+      expect(response.body).to include(post_item.title)
     end
   end
 
@@ -44,8 +48,8 @@ RSpec.describe PostsController, type: :controller do
         expect(response).to be_successful
       end
 
-      it 'assigns a new post' do
-        expect(assigns(:post)).to be_a_new(Post)
+      it 'includes the new post form in the rendered view' do
+        expect(response.body).to include('New Post')
       end
     end
 
@@ -103,9 +107,14 @@ RSpec.describe PostsController, type: :controller do
           }.not_to change(Post, :count)
         end
 
-        it 'renders new template' do
+        it 'returns unprocessable entity status' do
           process :create, method: :post, params: { post: invalid_attributes }
-          expect(response).to render_template(:new)
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+
+        it 'includes the new post form in the rendered view' do
+          process :create, method: :post, params: { post: invalid_attributes }
+          expect(response.body).to include('New Post')
         end
       end
     end
@@ -129,8 +138,8 @@ RSpec.describe PostsController, type: :controller do
         expect(response).to be_successful
       end
 
-      it 'assigns @post' do
-        expect(assigns(:post)).to eq(post_item)
+      it 'includes the post details in the rendered view' do
+        expect(response.body).to include(post_item.title)
       end
     end
 
@@ -201,8 +210,12 @@ RSpec.describe PostsController, type: :controller do
           expect(post_item.title).not_to eq('')
         end
 
-        it 'renders edit template' do
-          expect(response).to render_template(:edit)
+        it 'returns unprocessable entity status' do
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+
+        it 'includes the edit form in the rendered view' do
+          expect(response.body).to include('Edit Post')
         end
       end
     end
