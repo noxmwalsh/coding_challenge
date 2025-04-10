@@ -1,10 +1,23 @@
-
+# PostgreSQL. Versions 9.3 and up are supported.
+#
+# Install the pg driver:
+#   gem install pg
+# On macOS with Homebrew:
+#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
+# On Windows:
+#   gem install pg
+#       Choose the win32 build.
+#       Install PostgreSQL and put its /bin directory on your path.
+#
+# Configure Using Gemfile
+# gem "pg"
+#
 default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: mwalsh
-  password: 
+  username: your_postgres_username
+  password: your_postgres_password
   host: localhost
 
 development:
@@ -18,14 +31,11 @@ test:
   <<: *default
   database: coding_challenge_test
 
-
-# Store production database in the storage/ directory, which by default
-# is mounted as a persistent Docker volume in config/deploy.yml.
 production:
   primary:
     <<: *default
     database: coding_challenge_production
-    username: coding_challenge
+    username: your_production_username
     password: <%= ENV["CODING_CHALLENGE_DATABASE_PASSWORD"] %>
   cache:
     <<: *default
@@ -38,4 +48,4 @@ production:
   cable:
     <<: *default
     database: coding_challenge_production_cable
-    migrations_paths: db/cable_migrate
+    migrations_paths: db/cable_migrate 
