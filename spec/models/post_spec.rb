@@ -44,19 +44,41 @@ RSpec.describe Post, type: :model do
       expect(post).not_to be_valid
     end
 
-    it 'is valid without a hero_image_url' do
-      post.hero_image_url = nil
-      expect(post).to be_valid
-    end
+    describe 'hero_image_url' do
+      it 'is valid without a hero_image_url' do
+        post.hero_image_url = nil
+        expect(post).to be_valid
+      end
 
-    it 'is valid with a valid hero_image_url' do
-      post.hero_image_url = 'https://example.com/image.jpg'
-      expect(post).to be_valid
-    end
+      it 'is valid with a valid hero_image_url' do
+        post.hero_image_url = 'https://example.com/image.jpg'
+        expect(post).to be_valid
+      end
 
-    it 'is not valid with a hero_image_url longer than 1000 characters' do
-      post.hero_image_url = 'https://example.com/' + 'a' * 1000
-      expect(post).not_to be_valid
+      it 'is valid with a valid hero_image_url from placedog.net' do
+        post.hero_image_url = 'https://placedog.net/500/280'
+        expect(post).to be_valid
+      end
+
+      it 'is valid with a valid hero_image_url from unsplash' do
+        post.hero_image_url = 'https://source.unsplash.com/random/800x400/?dog'
+        expect(post).to be_valid
+      end
+
+      it 'is not valid with a hero_image_url longer than 1000 characters' do
+        post.hero_image_url = 'https://example.com/' + 'a' * 1000
+        expect(post).not_to be_valid
+      end
+
+      it 'is not valid with an invalid URL format' do
+        post.hero_image_url = 'not-a-url'
+        expect(post).not_to be_valid
+      end
+
+      it 'is not valid with a non-https URL' do
+        post.hero_image_url = 'http://example.com/image.jpg'
+        expect(post).not_to be_valid
+      end
     end
 
     it 'is not valid without an author' do
@@ -101,6 +123,10 @@ RSpec.describe Post, type: :model do
       expect(post).to respond_to(:body)
     end
 
+    it 'has a hero_image_url' do
+      expect(post).to respond_to(:hero_image_url)
+    end
+
     it 'has an author' do
       expect(post).to respond_to(:author)
     end
@@ -113,6 +139,11 @@ RSpec.describe Post, type: :model do
   describe 'factory' do
     it 'has a valid factory' do
       expect(build(:post)).to be_valid
+    end
+
+    it 'creates a post with a valid hero_image_url' do
+      post = create(:post)
+      expect(post.hero_image_url).to match(/^https:\/\//)
     end
   end
 end

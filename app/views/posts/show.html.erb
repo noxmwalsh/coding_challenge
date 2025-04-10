@@ -2,6 +2,11 @@
   <div class="row">
     <div class="col-lg-8 mx-auto">
       <article class="card">
+        <% if @post.hero_image_url.present? %>
+          <img src="<%= @post.hero_image_url %>" class="card-img-top" alt="<%= @post.title %>">
+        <% else %>
+          <img src="https://via.placeholder.com/800x400?text=No+Hero+Image" class="card-img-top" alt="Placeholder image">
+        <% end %>
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-start mb-4">
             <div>
@@ -17,7 +22,7 @@
             </div>
             <% if user_signed_in? && @post.user == current_user %>
               <div class="btn-group">
-                <%= link_to 'Edit', edit_post_path(@post.slugged), class: 'btn btn-outline-secondary' %>
+                <%= link_to 'Edit', edit_post_path(@post), class: 'btn btn-outline-secondary' %>
                 <%= button_to 'Delete', @post, method: :delete, 
                     data: { confirm: 'Are you sure?' }, 
                     class: 'btn btn-outline-danger' %>
