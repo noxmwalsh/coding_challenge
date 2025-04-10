@@ -1,29 +1,39 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="bg-white rounded-lg shadow-md p-6">
-    <div class="flex justify-between items-start mb-6">
-      <div>
-        <h1 class="text-3xl font-bold mb-2"><%= @post.title %></h1>
-        <p class="text-gray-600 mb-4"><%= @post.description %></p>
-        <div class="flex items-center text-sm text-gray-500">
-          <p>By <%= @post.author %></p>
-          <span class="mx-2">•</span>
-          <p><%= time_ago_in_words(@post.created_at) %> ago</p>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <article class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+              <h1 class="card-title display-5 mb-3"><%= @post.title %></h1>
+              <p class="lead text-muted mb-3"><%= @post.description %></p>
+              <div class="d-flex align-items-center text-muted">
+                <small>
+                  <i class="bi bi-person"></i> <%= @post.author %>
+                  <span class="mx-2">•</span>
+                  <i class="bi bi-clock"></i> <%= time_ago_in_words(@post.created_at) %> ago
+                </small>
+              </div>
+            </div>
+            <% if user_signed_in? && @post.user == current_user %>
+              <div class="btn-group">
+                <%= link_to 'Edit', edit_post_path(@post), class: 'btn btn-outline-secondary' %>
+                <%= button_to 'Delete', @post, method: :delete, 
+                    data: { confirm: 'Are you sure?' }, 
+                    class: 'btn btn-outline-danger' %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="post-content">
+            <%= simple_format(@post.body, class: 'card-text') %>
+          </div>
         </div>
+      </article>
+
+      <div class="mt-4">
+        <%= link_to 'Back to Posts', posts_path, class: 'btn btn-outline-secondary' %>
       </div>
-      <% if user_signed_in? && @post.user == current_user %>
-        <div class="flex space-x-2">
-          <%= link_to 'Edit', edit_post_path(@post), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
-          <%= button_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' %>
-        </div>
-      <% end %>
     </div>
-
-    <div class="prose max-w-none">
-      <%= simple_format(@post.body) %>
-    </div>
-  </div>
-
-  <div class="mt-8">
-    <%= link_to 'Back to Posts', posts_path, class: 'text-blue-600 hover:text-blue-800' %>
   </div>
 </div> 

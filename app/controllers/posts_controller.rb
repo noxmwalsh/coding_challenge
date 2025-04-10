@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   before_action :authorize_user, only: [:edit, :update, :destroy]
 
   def index
-    @posts = Post.order(created_at: :desc).page(params[:page])
+    @posts = Post.order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def show
