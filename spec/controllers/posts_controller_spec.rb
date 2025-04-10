@@ -36,6 +36,9 @@ RSpec.describe PostsController, type: :controller do
 
     it 'includes the post details in the rendered view' do
       expect(response.body).to include(post_item.title)
+      expect(response.body).to include(post_item.body)
+      expect(response.body).to include(post_item.description)
+      expect(response.body).to include(post_item.slug)
     end
   end
 
