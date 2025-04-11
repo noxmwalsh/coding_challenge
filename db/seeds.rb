@@ -23,7 +23,7 @@ Post.destroy_all
 
 # Generate 20 random dog-related posts
 20.times do
-  create(:post, 
+  create(:post,
     user: test_user,
     title: [
       "#{Faker::Creature::Dog.breed} Training Guide",

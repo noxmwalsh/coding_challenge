@@ -7,4 +7,4 @@ FactoryBot.define do
     author { Faker::Internet.email }
     user
   end
-end 
+end

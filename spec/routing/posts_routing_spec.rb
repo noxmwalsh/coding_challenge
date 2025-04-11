@@ -52,4 +52,4 @@ RSpec.describe PostsController, type: :routing do
       expect(delete: "/posts/#{post.id}").not_to be_routable
     end
   end
-end 
+end

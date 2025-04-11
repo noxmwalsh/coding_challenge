@@ -59,4 +59,4 @@ RSpec.describe "layouts/application", type: :view do
     render
     expect(rendered).to have_css(".container")
   end
-end 
+end
