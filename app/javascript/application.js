@@ -8,4 +8,4 @@ import "@rails/actiontext"
 
 // Import Bootstrap
 import "bootstrap"
-import "@popperjs/core"import * as bootstrap from "bootstrap"
+import "@popperjs/core"
