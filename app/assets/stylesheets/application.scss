@@ -1,0 +1,94 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+@import "bootstrap/scss/bootstrap";
+
+/* Custom styles */
+body {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.navbar {
+  margin-bottom: 2rem;
+}
+
+.card {
+  margin-bottom: 1rem;
+}
+
+.btn {
+  margin-right: 0.5rem;
+}
+
+.alert {
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+/* Post styles */
+.post-title {
+  margin-bottom: 1rem;
+}
+
+.post-meta {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.post-body {
+  white-space: pre-wrap;
+}
+
+/* Trix Editor Styles */
+.trix-content {
+  min-height: 200px;
+  margin-bottom: 1rem;
+}
+
+.trix-content h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.trix-content ul, .trix-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.trix-content a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.trix-content a:hover {
+  text-decoration: underline;
+}
+
+.trix-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+}
+
+/* Bootstrap overrides */
+.container {
+  max-width: 1200px;
+}
