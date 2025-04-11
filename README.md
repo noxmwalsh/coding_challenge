@@ -1,3 +1,6 @@
+<img width="1223" alt="Screen Shot 2025-04-10 at 6 02 43 PM" src="https://github.com/user-attachments/assets/4616cba8-3077-49cd-a0b4-1c450f13e1f2" />
+
+
 For this code challenge, you're going to build a quick and simple blog with Rails.
 
 <h1>Challenge</h1>
