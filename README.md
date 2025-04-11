@@ -1,34 +1,74 @@
 <img width="1223" alt="Screen Shot 2025-04-10 at 6 02 43 PM" src="https://github.com/user-attachments/assets/4616cba8-3077-49cd-a0b4-1c450f13e1f2" />
 
+##### Prerequisites
 
-For this code challenge, you're going to build a quick and simple blog with Rails.
+The setups steps expect following tools installed on the system.
 
-<h1>Challenge</h1>
-The site should consist of a homepage with a paginated list of posts in descending chronological order. Each post should show the title, description, and author, with a link to view the full post.
-<br></br>
-Creating a post should be a separate page with a simple form. Each post should have a title, description, and body. It should validate that all of these fields are filled out. The post should also have an author, which is automatically assigned as the signed in user. The author of a post should have the ability to edit and delete the post after creation.
-<br></br>
-You should be required to sign up for an account in order to create a post. For the purposes of this challenge, anyone can create an account and create a post. You can use a plug-and-play solution like devise if you want.
+- Github
+- Ruby 3.4.4
+- Rails 8.0.2
+- Node v20.17.0 (I recommend using [NVM](https://github.com/nvm-sh/nvm) for managing and switching nodes)
+- Yarn 1.22.22
 
-<h1>Technical Requirements</h1>
+##### 1. Check out the repository
 
-* Use Rails
-* Use PostgreSQL
-* Use webpack for assets
-* Use git for version control
+```bash
+git clone git@github.com:noxmwalsh/coding_challenge.git
+```
 
-You can use any CSS framework you're comfortable with, e.g. Bootstrap, Tailwind, antd, etc. The site design does not need to be unique or fancy, but it should be clean and functional.
+##### 2. Create database.yml file
 
-<h1>Deliverables</h1>
-The completed project should be sent back with a link to the repository where it's hosted. If there are any special instructions for running the project outside of the usual for Rails, please include that in the README.
+Copy the sample database.yml file and edit the database configuration as required.
 
-<h1>Extra Credit</h1>
-It's totally optional, but we encourage you to follow any ideas you have to enhance the site beyond the base requirements. Here are some examples:
+```bash
+cp config/database.example.yml config/database.yml
+```
 
-* Seed the database with posts so there is content to play around with immediately after install
-* Add rich text support to the post body via Markdown or Action Text
-* Add hero images to posts
-* Add slugs to posts for pretty URLs
-* Implement the homepage in React and fetch pages via an API
-* Host the site on Heroku (free plan)
-* Add tests
+##### 3. Create and setup the database
+
+Run the following commands to create and setup the database.
+
+```ruby
+bundle exec rake db:create
+bundle exec rake db:setup
+bundle exec rake db:seed (if you want scaffold data)
+```
+
+##### 4. Build assets
+
+```bash
+yarn build
+```
+
+##### 5. Start the Rails server
+
+You can start the rails server using the command given below.
+
+```ruby
+bundle exec rails s
+```
+
+Or, if you're planning on doing development on the project, just run the following
+
+```bash
+bin/dev
+```
+
+And now you can visit the site with the URL http://localhost:3000.
+
+**Features List**:
+
+* Users can sign-up, sign-in, and sign out.  Signed in users can do write actions on the app (for example, creating or deleting a post)
+* Each post has four attributes: Body, Description, Title, and Hero Image URL (potential to change this to use attached images with active_storage/paperclip).  The signed in author is the assigned user of a created post.
+* Pagination is available (max post per page is 10)
+* There's a bunch of rspec specs added
+* Each page has a unique slug to it that's derived from the title
+* Rich text support for the body attribute (Although the styling for Trix is borked - I'm looking into it)
+* It's ready to run at the start with seed data.  Dog themed, of course.
+* Uses Bootstrap for styling
+* Uses Postgres for data persistence, although nothing is stopping anything from swapping the adapter and DB
+
+**WIP**:
+* Heroku deployment
+* Fixing certain styling issues (mainly involved)
+Maybe more dog references 
