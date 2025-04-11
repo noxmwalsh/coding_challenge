@@ -22,6 +22,11 @@
     <%= form.text_area :description, rows: 3, class: "form-control", required: true %>
   </div>
 
+  <div class="mb-3">
+    <%= form.label :hero_image_url, class: "form-label" %>
+    <%= form.text_area :hero_image_url, rows: 3, class: "form-control"%>
+  </div>
+
   <div class="mb-4">
     <%= form.label :body, class: "form-label" %>
     <%= form.rich_text_area :body, class: "trix-content", required: true %>
