@@ -16,13 +16,13 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: your_postgres_username
-  password: your_postgres_password
-  host: localhost
 
 development:
   <<: *default
   database: coding_challenge_development
+  username: mwalsh
+  password: mwalsh
+  host: localhost
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -30,25 +30,24 @@ development:
 test:
   <<: *default
   database: coding_challenge_test
+  username: mwalsh
+  password: mwalsh
+  host: localhost
 
 production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
   primary:
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>
-    database: coding_challenge_production
-    username: your_production_username
   cache:
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>
-    database: coding_challenge_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>
-    database: coding_challenge_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
-    database: coding_challenge_production_cable
-    migrations_paths: db/cable_migrate 
+    url: <%= ENV['DATABASE_URL'] %> 

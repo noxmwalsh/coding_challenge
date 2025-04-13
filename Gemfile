@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+ruby "3.3.4"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
@@ -51,13 +53,15 @@ gem "image_processing", "~> 1.2"
 # Use Kaminari for pagination
 gem "kaminari"
 
+# USe AWS for production image storage
+gem "aws-sdk-s3", require: false
+
 # Use FriendlyId for slugs
 gem "friendly_id", "~> 5.1.0"
 
 group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
-  gem "kaminari"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ], require: "debug/prelude"
 
