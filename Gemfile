@@ -53,6 +53,9 @@ gem "image_processing", "~> 1.2"
 # Use Kaminari for pagination
 gem "kaminari"
 
+# USe AWS for production image storage
+gem "aws-sdk-s3", require: false
+
 # Use FriendlyId for slugs
 gem "friendly_id", "~> 5.1.0"
 
