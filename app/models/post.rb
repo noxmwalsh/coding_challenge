@@ -22,6 +22,6 @@ class Post < ApplicationRecord
     return unless hero_image.attached?
     return if hero_image.content_type.in?(%w[image/jpeg image/png image/gif])
 
-    errors.add(:hero_image, 'must be a JPEG, PNG, or GIF')
+    errors.add(:hero_image, "must be a JPEG, PNG, or GIF")
   end
 end
