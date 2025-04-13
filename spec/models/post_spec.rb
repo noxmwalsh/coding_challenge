@@ -44,95 +44,67 @@ RSpec.describe Post, type: :model do
       expect(post).not_to be_valid
     end
 
-    describe 'hero_image_url' do
-      it 'is valid without a hero_image_url' do
-        post.hero_image_url = nil
-        expect(post).to be_valid
-      end
-
-      it 'is valid with a valid hero_image_url' do
-        post.hero_image_url = 'https://example.com/image.jpg'
-        expect(post).to be_valid
-      end
-
-      it 'is valid with a valid hero_image_url from placedog.net' do
-        post.hero_image_url = 'https://placedog.net/500/280'
-        expect(post).to be_valid
-      end
-
-      it 'is valid with a valid hero_image_url from unsplash' do
-        post.hero_image_url = 'https://source.unsplash.com/random/800x400/?dog'
-        expect(post).to be_valid
-      end
-
-      it 'is not valid with a hero_image_url longer than 1000 characters' do
-        post.hero_image_url = 'https://example.com/' + 'a' * 1000
-        expect(post).not_to be_valid
-      end
-
-      it 'is not valid with an invalid URL format' do
-        post.hero_image_url = 'not-a-url'
-        expect(post).not_to be_valid
-      end
-
-      it 'is not valid with a non-https URL' do
-        post.hero_image_url = 'http://example.com/image.jpg'
-        expect(post).not_to be_valid
-      end
-    end
-
     it 'is not valid without an author' do
       post.author = nil
       expect(post).not_to be_valid
+    end
+
+    describe 'hero_image' do
+      it 'is valid without a hero image' do
+        expect(post).to be_valid
+      end
+
+      it 'is valid with a valid image attachment' do
+        post = build(:post, :with_hero_image)
+        expect(post).to be_valid
+      end
+
+      it 'is not valid with an invalid file type' do
+        post.hero_image.attach(
+          io: File.open(Rails.root.join('spec', 'fixtures', 'files', 'test.txt')),
+          filename: 'test.txt',
+          content_type: 'text/plain'
+        )
+        expect(post).not_to be_valid
+        expect(post.errors[:hero_image]).to include('must be a JPEG, PNG, or GIF')
+      end
     end
   end
 
   describe 'friendly_id' do
     it 'generates a slug from the title' do
-      post.title = 'My First Post'
-      post.save!
-      expect(post.slug).to eq('my-first-post')
+      post.save
+      expect(post.slug).to eq(post.title.parameterize)
     end
 
     it 'updates the slug when the title changes' do
-      post.save!
+      post.save
       original_slug = post.slug
-      post.title = 'Updated Title'
-      post.save!
+      post.update(title: 'Updated Title')
       expect(post.slug).not_to eq(original_slug)
       expect(post.slug).to eq('updated-title')
     end
   end
 
-  describe 'associations' do
-    it { should belong_to(:user) }
-  end
-
   describe 'attributes' do
-    let(:post) { build(:post) }
-
     it 'has a title' do
-      expect(post).to respond_to(:title)
+      expect(post.title).to be_present
     end
 
     it 'has a description' do
-      expect(post).to respond_to(:description)
+      expect(post.description).to be_present
     end
 
     it 'has a body' do
-      expect(post).to respond_to(:body)
-    end
-
-    it 'has a hero_image_url' do
-      expect(post).to respond_to(:hero_image_url)
+      expect(post.body).to be_present
     end
 
     it 'has an author' do
-      expect(post).to respond_to(:author)
+      expect(post.author).to be_present
     end
 
     it 'belongs to a user' do
-      expect(post).to respond_to(:user)
+      expect(post.user).to be_present
     end
   end
 
@@ -141,9 +113,9 @@ RSpec.describe Post, type: :model do
       expect(build(:post)).to be_valid
     end
 
-    it 'creates a post with a valid hero_image_url' do
-      post = create(:post)
-      expect(post.hero_image_url).to match(/^https:\/\//)
+    it 'can create a post with a hero image' do
+      post = create(:post, :with_hero_image)
+      expect(post.hero_image).to be_attached
     end
   end
 end
