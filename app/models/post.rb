@@ -3,7 +3,6 @@ class Post < ApplicationRecord
   friendly_id :title, use: :slugged
 
   belongs_to :user
-  has_rich_text :body
   has_one_attached :hero_image
 
   validates :title, presence: true, length: { minimum: 3, maximum: 100 }
