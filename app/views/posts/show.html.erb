@@ -2,8 +2,8 @@
   <div class="row">
     <div class="col-lg-8 mx-auto">
       <article class="card">
-        <% if @post.hero_image_url.present? %>
-          <img src="<%= @post.hero_image_url %>" class="card-img-top" alt="<%= @post.title %>">
+        <% if @post.hero_image.attached? %>
+          <%= image_tag @post.hero_image.variant(resize: "800x400"), class: "img-fluid mb-4", alt: @post.title %>
         <% else %>
           <img src="https://via.placeholder.com/800x400?text=No+Hero+Image" class="card-img-top" alt="Placeholder image">
         <% end %>

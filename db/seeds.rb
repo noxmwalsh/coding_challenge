@@ -1,5 +1,6 @@
 require 'faker'
 require 'factory_bot_rails'
+require 'open-uri'
 include FactoryBot::Syntax::Methods
 
 # This file should ensure the existence of records required to run the application in every environment (production,
@@ -23,7 +24,7 @@ Post.destroy_all
 
 # Generate 20 random dog-related posts
 20.times do
-  create(:post,
+  post = create(:post,
     user: test_user,
     title: [
       "#{Faker::Creature::Dog.breed} Training Guide",
@@ -49,9 +50,14 @@ Post.destroy_all
           "Consider adopting a #{Faker::Creature::Dog.breed} from your local shelter."
         ].sample
       end.join(" ")
-    end.join("\n\n"),
-    hero_image_url: "https://placedog.net/500/280?random"
+    end.join("\n\n")
   )
+
+  # Attach a random dog image from the Dog API
+  image_url = "https://placedog.net/500/280?random"
+  downloaded_image = URI.open(image_url)
+  post.hero_image.attach(io: downloaded_image, filename: "dog_#{post.id}.jpg")
+  downloaded_image.close
 end
 
 puts "Created 20 posts for #{test_user.email}"
