@@ -59,7 +59,7 @@ And now you can visit the site with the URL http://localhost:3000.
 **Features List**:
 
 * Users can sign-up, sign-in, and sign out.  Signed in users can do write actions on the app (for example, creating or deleting a post)
-* Each post has four attributes: Body, Description, Title, and Hero Image URL (potential to change this to use attached images with active_storage/paperclip).  The signed in author is the assigned user of a created post.
+* Each post has four attributes: Body, Description, Title, and Hero Image (Using ActiveStorage and miniMagick).  The signed in author is the assigned user of a created post.
 * Pagination is available (max post per page is 10)
 * There's a bunch of rspec specs added
 * Each page has a unique slug to it that's derived from the title
@@ -70,5 +70,3 @@ And now you can visit the site with the URL http://localhost:3000.
 
 **WIP**:
 * Heroku deployment
-* Fixing certain styling issues (mainly involved)
-Maybe more dog references 
