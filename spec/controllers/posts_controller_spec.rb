@@ -129,6 +129,7 @@ RSpec.describe PostsController, type: :controller do
 
           it "redirects to the post" do
             put :update, params: { slug: post_instance.slug, post: new_attributes }
+            post_instance.reload
             expect(response).to redirect_to(post_instance)
           end
         end
@@ -181,6 +182,7 @@ RSpec.describe PostsController, type: :controller do
         let(:other_user_post) { create(:post) }
 
         it "does not destroy the post" do
+          other_user_post # Create the post before the expectation
           expect {
             delete :destroy, params: { slug: other_user_post.slug }
           }.not_to change(Post, :count)

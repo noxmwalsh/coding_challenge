@@ -37,8 +37,13 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post.destroy
-    redirect_to posts_url, notice: "Post was successfully destroyed."
+    return redirect_to posts_url, alert: "You are not authorized to perform this action." unless current_user == @post.user
+
+    if @post.destroy
+      redirect_to posts_url, notice: "Post was successfully destroyed."
+    else
+      redirect_to posts_url, alert: "Failed to destroy post."
+    end
   end
 
   private
