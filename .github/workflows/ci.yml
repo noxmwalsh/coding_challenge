@@ -103,7 +103,7 @@ jobs:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/coding_challenge_test
         run: |
-          bin/rails db:test:prepare test test:system
+          bin/rails db:test:prepare test test:system && bundle exec rspec
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
