@@ -59,14 +59,13 @@ And now you can visit the site with the URL http://localhost:3000.
 **Features List**:
 
 * Users can sign-up, sign-in, and sign out.  Signed in users can do write actions on the app (for example, creating or deleting a post)
-* Each post has four attributes: Body, Description, Title, and Hero Image (Using ActiveStorage and miniMagick).  The signed in author is the assigned user of a created post.
-* Pagination is available (max post per page is 10)
-* There's a bunch of rspec specs added
-* Each page has a unique slug to it that's derived from the title
-* Rich text support for the body attribute (Although the styling for Trix is borked - I'm looking into it)
-* It's ready to run at the start with seed data.  Dog themed, of course.
-* Uses Bootstrap for styling
+* Each post has five attributes: Body, Description, Title, author (which is a User) and Hero Image (Using ActiveStorage and miniMagick).  The signed in author is the assigned user of a created post. Everything should validated.
+* Pagination is available (max post per page is 10) and is done in an accordian style
+* There's a bunch of rspec specs added to cover everything from the controllers, models, sign-in, and routes
+* Each page has a unique slug to it that's derived from the title to make it human readable
+* The hero images is uploadable locally in development.  On production/heroku, it uploads directly to AWS S3!
+* It's ready to run at the start with seed data.  Dog themed, of course 🐕
+* Uses Bootstrap for styling and DOM structure
 * Uses Postgres for data persistence, although nothing is stopping anything from swapping the adapter and DB
-
-**WIP**:
-* Heroku deployment
+* It's deployed to Heroku right now!  In fact, it automatically deploys and follows a pipeline ruleset (so, it's a lightweight CI/CD setup).  Pull requests on this repo will run checks and will not allow merging until everything passes.
+* Did I mention this is a dog themed blog?
