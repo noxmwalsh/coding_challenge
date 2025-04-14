@@ -57,37 +57,6 @@ body {
   white-space: pre-wrap;
 }
 
-/* Trix Editor Styles */
-.trix-content {
-  min-height: 200px;
-  margin-bottom: 1rem;
-}
-
-.trix-content h1 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.trix-content ul, .trix-content ol {
-  margin-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.trix-content a {
-  color: #0d6efd;
-  text-decoration: none;
-}
-
-.trix-content a:hover {
-  text-decoration: underline;
-}
-
-.trix-content img {
-  max-width: 100%;
-  height: auto;
-  margin: 1rem 0;
-}
-
 /* Bootstrap overrides */
 .container {
   max-width: 1200px;
