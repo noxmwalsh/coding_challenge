@@ -11,7 +11,7 @@
       <% @posts.each do |post| %>
         <article class="card mb-4">
           <div class="card-body">
-            <div class="card h-100">
+            <div class="h-100">
               <% if post.hero_image.attached? %>
                 <%= image_tag post.hero_image.variant(resize: "800x400"), class: "card-img-top", alt: post.title %>
               <% end %>
